@@ -4,9 +4,9 @@
 
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
 
-/* Convert C from hexadecimal character to integer.  */
-static int hex2bin(char c){
+static char hex2bin(char c){
     switch (c) {
         default: return c - '0';
         case 'a':
@@ -75,7 +75,7 @@ int main (int argc, char **argv){
                         case 'v': c = '\v'; break;
                         case 'x':
                         {
-                            unsigned char ch = *s;
+                            char ch = *s;
                             if (! isxdigit (ch)) {
                                 goto not_an_escape;
                             }
