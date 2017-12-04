@@ -6,9 +6,10 @@
 #include <ctype.h>
 #include <stdio.h>
 
-static char hex2bin(char c){
+static char hex2bin(char c) {
     switch (c) {
-        default: return c - '0';
+        default:
+            return c - '0';
         case 'a':
         case 'A':
             return 10;
@@ -30,7 +31,7 @@ static char hex2bin(char c){
     }
 }
 
-int main (int argc, char **argv){
+int main(int argc, char **argv) {
     char allow_line_feed = 1;
     char escapes = 0;
     --argc;
@@ -64,25 +65,41 @@ int main (int argc, char **argv){
             while ((c = *s++)) {
                 if (c == '\\' && *s) {
                     switch (c = *s++) {
-                        case 'a': c = '\a'; break;
-                        case 'b': c = '\b'; break;
-                        case 'c': exit (0);
-                        case 'e': c = '\x1B'; break;
-                        case 'f': c = '\f'; break;
-                        case 'n': c = '\n'; break;
-                        case 'r': c = '\r'; break;
-                        case 't': c = '\t'; break;
-                        case 'v': c = '\v'; break;
-                        case 'x':
-                        {
+                        case 'a':
+                            c = '\a';
+                            break;
+                        case 'b':
+                            c = '\b';
+                            break;
+                        case 'c':
+                            exit(0);
+                        case 'e':
+                            c = '\x1B';
+                            break;
+                        case 'f':
+                            c = '\f';
+                            break;
+                        case 'n':
+                            c = '\n';
+                            break;
+                        case 'r':
+                            c = '\r';
+                            break;
+                        case 't':
+                            c = '\t';
+                            break;
+                        case 'v':
+                            c = '\v';
+                            break;
+                        case 'x': {
                             char ch = *s;
-                            if (! isxdigit (ch)) {
+                            if (!isxdigit (ch)) {
                                 goto not_an_escape;
                             }
                             s++;
                             c = hex2bin(ch);
                             ch = *s;
-                            if (isxdigit (ch))                            {
+                            if (isxdigit (ch)) {
                                 s++;
                                 c = c * 16 + hex2bin(ch);
                             }
@@ -90,11 +107,10 @@ int main (int argc, char **argv){
                             break;
                         case '0':
                             c = 0;
-                            if (! ('0' <= *s && *s <= '7')) {
+                            if (!('0' <= *s && *s <= '7')) {
                                 break;
                             }
                             c = *s++;
-                            /* Fall through.  */
                         case '1':
                         case '2':
                         case '3':
@@ -110,22 +126,25 @@ int main (int argc, char **argv){
                                 c = c * 8 + (*s++ - '0');
                             }
                             break;
-                        case '\\': break;
+                        case '\\':
+                            break;
 
                         not_an_escape:
-                        default:  putchar ('\\'); break;
+                        default:
+                            putchar('\\');
+                            break;
                     }
                 }
-                putchar (c);
+                putchar(c);
             }
             argc--;
             argv++;
             if (argc > 0)
-                putchar (' ');
+                putchar(' ');
         }
     } else {
         while (argc > 0) {
-            fputs (argv[0], stdout);
+            fputs(argv[0], stdout);
             argc--;
             argv++;
             if (argc > 0) {
@@ -137,5 +156,5 @@ int main (int argc, char **argv){
     if (allow_line_feed) {
         putchar('\n');
     }
-    exit (0);
+    exit(0);
 }
