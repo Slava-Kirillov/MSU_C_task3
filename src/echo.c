@@ -6,31 +6,6 @@
 #include <ctype.h>
 #include <stdio.h>
 
-static char hex2bin(char c) {
-    switch (c) {
-        default:
-            return c - '0';
-        case 'a':
-        case 'A':
-            return 10;
-        case 'b':
-        case 'B':
-            return 11;
-        case 'c':
-        case 'C':
-            return 12;
-        case 'd':
-        case 'D':
-            return 13;
-        case 'e':
-        case 'E':
-            return 14;
-        case 'f':
-        case 'F':
-            return 15;
-    }
-}
-
 int main(int argc, char **argv) {
     char allow_line_feed = 1;
     char escapes = 0;
@@ -91,20 +66,6 @@ int main(int argc, char **argv) {
                         case 'v':
                             c = '\v';
                             break;
-                        case 'x': {
-                            char ch = *s;
-                            if (!isxdigit (ch)) {
-                                goto not_an_escape;
-                            }
-                            s++;
-                            c = hex2bin(ch);
-                            ch = *s;
-                            if (isxdigit (ch)) {
-                                s++;
-                                c = c * 16 + hex2bin(ch);
-                            }
-                        }
-                            break;
                         case '0':
                             c = 0;
                             if (!('0' <= *s && *s <= '7')) {
@@ -128,8 +89,6 @@ int main(int argc, char **argv) {
                             break;
                         case '\\':
                             break;
-
-                        not_an_escape:
                         default:
                             putchar('\\');
                             break;
