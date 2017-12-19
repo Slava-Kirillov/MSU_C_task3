@@ -8,13 +8,14 @@
 
 int main() {
     char *path = getenv("PWD");
+    char *p = path;
 
-    if (!path || path[0] != '/')
+    if (!p || p[0] != '/')
         exit(1);
-    while ((path = strstr(path, "/."))) {
-        if (!path[2] || path[2] == '/' || (path[2] == '.' && (!path[3] || path[3] == '/')))
+    while ((p = strstr(p, "/."))) {
+        if (!p[2] || p[2] == '/' || (p[2] == '.' && (!p[3] || p[3] == '/')))
             exit(1);
-        path++;
+        p++;
     }
     puts(path);
     exit(0);
